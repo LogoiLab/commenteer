@@ -6,4 +6,6 @@ edition = "2018"
 
 [dependencies]
 clap = "*"
+mime_guess = "*"
 tempfile = "*"
+walkdir = "*"
