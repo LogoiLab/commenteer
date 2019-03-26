@@ -1,0 +1,9 @@
+[package]
+name = "commenteer"
+version = "0.1.0"
+authors = ["Chad Baxter <cbaxter@mail.umw.edu>"]
+edition = "2018"
+
+[dependencies]
+clap = "*"
+tempfile = "*"
