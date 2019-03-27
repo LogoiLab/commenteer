@@ -8,7 +8,7 @@ use std::fs::{File};
 use std::io::Write;
 use std::path::Path;
 
-use clap::{App, Arg}
+use clap::{App, Arg};
 use walkdir::WalkDir;
 
 fn prepend_file<P: AsRef<Path>>(data: &[u8], file_path: &P) -> std::io::Result<()> {
