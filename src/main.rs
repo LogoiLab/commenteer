@@ -56,7 +56,7 @@ fn main() {
     let data = "/*╭──────────────────────╮\n  │ Author: Chad Baxter  │\n  │ Date:                │\n  │ For:                 │\n  ╰──────────────────────╯*/\n";
 
     if matches.is_present("recurse") {
-        for entry in WalkDir::new(matches.value_of("input")) {
+        for entry in WalkDir::new(matches.value_of("input").unwrap()) {
             let entry = entry.unwrap();
             let metadata = entry.metadata().expect("metadata call failed");
             if !metadata.is_dir() {
