@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate clap;
 extern crate mime_guess;
 extern crate tempfile;
@@ -7,45 +8,63 @@ use std::fs::{File};
 use std::io::Write;
 use std::path::Path;
 
+use clap::{App, Arg}
 use walkdir::WalkDir;
 
 fn prepend_file<P: AsRef<Path>>(data: &[u8], file_path: &P) -> std::io::Result<()> {
-    println!("1");
     let tmp_file = tempfile::NamedTempFile::new().unwrap();
-    println!("1");
     let tmp_path = tmp_file.into_temp_path();;
-    println!("1");
     let mut tmp = File::create(&tmp_path).unwrap();
-    // Open source file for reading
-    println!("1");
     let mut src = File::open(&file_path).unwrap();
-    // Write the data to prepend
-    println!("1");
     tmp.write_all(&data).unwrap();
-    // Copy the rest of the source file
-    println!("1");
     std::io::copy(&mut src, &mut tmp).unwrap();
-    println!("1");
     std::fs::remove_file(&file_path).unwrap();
-    println!("1");
     let _ = File::create(&file_path).unwrap();
-    println!("1");
     std::fs::copy(&tmp_path, &file_path).unwrap();
     Ok(())
 }
 
 fn main() {
-    for entry in WalkDir::new("./") {
-        let entry = entry.unwrap();
-        let metadata = entry.metadata().expect("metadata call failed");
-        if !metadata.is_dir() {
-            let guess = mime_guess::guess_mime_type(entry.path());
-            if format!("{}", guess).contains("text") {
-                println!("{:?}", entry);
+    let matches = App::new("Commenteer")
+        .version(crate_version!())
+        .author(crate_authors!())
+        .about("Add comment headers to code.")
+        .arg(Arg::with_name("recurse")
+             .short("r")
+             .long("recurse")
+             .help("Add header to every text file in the specified path.")
+             .takes_value(false))
+        .arg(Arg::with_name("input")
+             .short("i")
+             .long("input")
+             .help("List of paths or files to add a header to")
+             .takes_value(true)
+             .multiple(false)
+             .required(true))
+        .arg(Arg::with_name("comment")
+             .short("c")
+             .long("comment")
+             .help("A path to a file containing the header you would like to add.")
+             .takes_value(true)
+             .required(true))
+        .arg(Arg::with_name("verbose")
+             .short("v")
+             .long("verbose")
+             .help("Show verbose information about the operation"))
+        .get_matches();
+
+    let data = "/*╭──────────────────────╮\n  │ Author: Chad Baxter  │\n  │ Date:                │\n  │ For:                 │\n  ╰──────────────────────╯*/\n";
+
+    if matches.is_present("recurse") {
+        for entry in WalkDir::new(matches.value_of("input")) {
+            let entry = entry.unwrap();
+            let metadata = entry.metadata().expect("metadata call failed");
+            if !metadata.is_dir() {
+                let guess = mime_guess::guess_mime_type(entry.path());
+                if format!("{}", guess).contains("text") {
+                    prepend_file(data.as_bytes(), &entry.path()).unwrap();
+                }
             }
         }
     }
-    let file_path = Path::new("./file.txt");
-    let data = "Data to add to the beginning of the file\n";
-    prepend_file(data.as_bytes(), &file_path).unwrap();
 }
