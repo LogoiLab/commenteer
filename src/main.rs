@@ -66,5 +66,13 @@ fn main() {
                 }
             }
         }
+    } else {
+        let file_path = matches.value_of("input").unwrap();
+        let guess = mime_guess::guess_mime_type(file_path);
+        if format!("{}", guess).contains("text") {
+            prepend_file(data.as_bytes(), &file_path).unwrap();
+        } else {
+            println!("Given input file was not a text file.");
+        }
     }
 }
