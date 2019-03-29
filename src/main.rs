@@ -105,7 +105,9 @@ fn main() {
                     }
                 }
             } else {
-                println!("{} is a not directory. Ignoring...", path.to_str().unwrap());
+                if matches.is_present("verbose") {
+                    println!("{} is a not directory. Ignoring...", path.to_str().unwrap());
+                }
             }
         }
     } else if matches.is_present("input") {
@@ -123,7 +125,9 @@ fn main() {
                     println!("Given input file was not a text file.");
                 }
             } else {
-                println!("{} is a directory. Ignoring...", entry.to_str().unwrap());
+                if matches.is_present("verbose") {
+                    println!("{} is a directory. Ignoring...", entry.to_str().unwrap());
+                }
             }
         }
     } else {
