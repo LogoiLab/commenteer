@@ -1,6 +1,6 @@
 [package]
 name = "commenteer"
-version = "0.2.0"
+version = "0.2.0-1"
 authors = ["Chad Baxter <cbaxter@mail.umw.edu>"]
 edition = "2018"
 description = "A simple tool for adding comment headers to code files."

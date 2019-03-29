@@ -53,7 +53,7 @@ fn main() {
              .help("A string containing the header you would like to add. Can contain control characters that use backslashes(\\n, \\t etc).")
              .takes_value(true))
         .arg(Arg::with_name("ignore")
-             .short("i")
+             .short("n")
              .long("ignore")
              .help("Paths to files you would like to exclude from being modified")
              .takes_value(true)
