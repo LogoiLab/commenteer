@@ -116,15 +116,18 @@ fn main() {
             }
             let guess = mime_guess::guess_mime_type(entry);
             let metadata = entry.metadata().expect("metadata call failed");
-            if !metadata.is_dir() {
-                if format!("{}", guess).contains("text") {
-                    prepend_file(data.as_bytes(), &entry).unwrap();
+            let path_as_str: &str = entry.to_str().unwrap();
+            if !ignore_list.contains(&path_as_str) {
+                if !metadata.is_dir() {
+                    if format!("{}", guess).contains("text") {
+                        prepend_file(data.as_bytes(), &entry).unwrap();
+                    } else {
+                        println!("Given input file was not a text file.");
+                    }
                 } else {
-                    println!("Given input file was not a text file.");
-                }
-            } else {
-                if matches.is_present("verbose") {
-                    println!("{} is a directory. Ignoring...", entry.to_str().unwrap());
+                    if matches.is_present("verbose") {
+                        println!("{} is a directory. Ignoring...", entry.to_str().unwrap());
+                    }
                 }
             }
         }
