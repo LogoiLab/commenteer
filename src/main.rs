@@ -64,8 +64,6 @@ fn main() {
              .help("Show verbose information about the operation"))
         .get_matches();
 
-    //let data = "/*╭──────────────────────╮\n  │ Author: Chad Baxter  │\n  │ Date:                │\n  │ For:                 │\n  ╰──────────────────────╯*/\n";
-
     let mut data: String = String::new();
 
     if matches.is_present("comment-file") {
