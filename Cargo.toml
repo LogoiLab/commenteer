@@ -5,7 +5,7 @@ authors = ["Chad Baxter <cbaxter@mail.umw.edu>"]
 edition = "2018"
 description = "A simple tool for adding comment headers to code files."
 repository = "https://www.github.com/LogoiLab/commenteer"
-license = "GPL"
+license = "GPL-3.0-or-later"
 keywords = ["comment", "preprocessor"]
 publish = true
 
